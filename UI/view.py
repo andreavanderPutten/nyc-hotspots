@@ -8,15 +8,24 @@ class View(ft.UserControl):
         self._page = page
         self._page.title = "Template application using MVC and DAO"
         self._page.horizontal_alignment = 'CENTER'
-        self._page.theme_mode = ft.ThemeMode.DARK
+        self._page.theme_mode = ft.ThemeMode.LIGHT
         # controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
         # graphical elements
         self._title = None
         self.txt_name = None
-        self.btn_hello = None
+        self.btn_analisi_grafo = None
         self.txt_result = None
         self.txt_container = None
+        self.ddprovider = None
+        self.txtDistanza = None
+        self.txtStringa = None
+        self.ddTarget = None
+        self.btn_grafo = None
+        self.btn_calcola_percorso = None
+        self.txt_result2= None
+        self.txt_result3 = None
+
 
     def load_interface(self):
         # title
@@ -32,14 +41,37 @@ class View(ft.UserControl):
         )
 
         # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
+        self.ddprovider = ft.Dropdown(label="Provider")
+        self.btn_grafo = ft.ElevatedButton(text="Crea grafo", on_click=self._controller.handle_graph)
+        row1 = ft.Row([self.ddprovider, self.btn_grafo],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
+        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
+        self._page.controls.append(self.txt_result)
+
+
+
+        self.txtDistanza = ft.TextField(label="Distanza")
+        self.btn_analisi_grafo = ft.ElevatedButton(text="Analisi grafo",on_click=self._controller.handle_analisi)
+
+        row2 = ft.Row([self.txtDistanza, self.btn_analisi_grafo],
+                      alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row2)
+        self.txt_result2 = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self._page.controls.append(self.txt_result2)
+
+        self.txtStringa = ft.TextField(label="Stringa")
+        self.btn_calcola_percorso = ft.ElevatedButton(text="Calcola percorso",on_click=self._controller.handle_path)
+        self.ddTarget = ft.Dropdown(label="Target")
+        row3 = ft.Row([self.txtStringa, self.btn_calcola_percorso,self.ddTarget],
+                      alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row3)
+        self.txt_result3 = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self._page.controls.append(self.txt_result3)
 
         # List View where the reply is printed
-        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
-        self._page.controls.append(self.txt_result)
+
+        self._controller.fillDD()
         self._page.update()
 
     @property
